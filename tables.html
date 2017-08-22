@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>HotRestaurant</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <style type="text/css">
+          .panel-body {
+            display: inline-block;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron text-center">
+              <h1>Hot Restaurant</h1>
+              <h3>Current Reservations and Waiting List</h3>
+              <hr>
+              <a href="/reserve"><button type="button" class="btn btn-danger btn-lg">Make Reservation</button></a>
+              <a href="/home"><button type="button" class="btn btn-default btn-lg">Home</button></a>
+            </div><!-- jumbotron -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Current Reservations</h3>
+                </div>
+              <div id="tables" class="panel-body">
+              </div>
+              </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Waiting List</h3>
+                </div>
+              <div id="waiting" class="panel-body">
+              </div>
+        </div><!-- container -->
+        <div class="container">
+          <footer>
+            Control Panel
+            <br>
+            <a id="clear" href="">Clear Table</a>
+            <a href="/t5">Table Link</a>
+            <a href="/wait">API Wait List</a>
+          </footer>
+        </div><!-- footer -->
+        <script>
+          $.get("/api", function(data, status){
+              for(var i = 0; i < data.length; i ++) {
+                if(i < 5) {
+                  $("#tables").append($("<tr>").html(data[i].name));
+                } else {
+                  $("#waiting").append($("<tr>").html(data[i].name));
+                }
+              }
+          });
+          $("#clear").on("click", function() {
+            $.post("/clear", function() {
+              // location.reload();
+            });
+          });
+        </script>
+    </body>
+</html>
